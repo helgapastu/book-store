@@ -1,0 +1,100 @@
+<ng-container *ngIf="!editMode">
+    <div class="form-group">
+        <input type="text" class="form-control filter" [(ngModel)]="keyWord" (ngModelChange)="filterBooks($event)"
+        placeholder="Search...">
+    </div>
+
+    <div class="card-container">
+        <a class="card" *ngFor="let book of books; let i = index;" [ngClass]="{'active-card': hoverIndex === i}"
+            (mouseover)="hoverIndex = i" (mouseleave)="hoverIndex = null" (click)="editBook(book)">
+            <div class="img-block">
+                <button class="prev-button" *ngIf="hoverIndex === i && book.images.length > 1"
+                    (click)="$event.preventDefault(); $event.stopPropagation(); prevPhoto(book)">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" /></svg>
+                </button>
+
+                <img [src]="book.images[book.displayedImg]">
+
+                <button class="next-button" *ngIf="hoverIndex === i && book.images.length > 1"
+                    (click)="$event.preventDefault(); $event.stopPropagation(); nextPhoto(book)">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" /></svg>
+                </button>
+            </div>
+
+            <h4>{{book.title}}</h4>
+            <p>{{book.author}}</p>
+            <p>{{book.date}}</p>
+
+            <button class="lib-button remove-button" *ngIf="!keyWord" (click)="deleteBook(i)">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path
+                            d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4z" />
+                        </svg>
+                </span>
+            </button>
+        </a>
+    </div>
+
+    <button class="lib-button add-button" (click)="toggleEditMode()">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                    d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+        </span>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="editMode">
+    <div class="form-group">
+        <label for="titleInput">Title:</label>
+        <input type="text" class="form-control" id="titleInput" [(ngModel)]="book.title">
+    </div>
+
+    <div class="form-group">
+        <label for="imagesInput">Images:</label>
+        <input type="text" class="form-control" id="imagesInput" aria-describedby="imagesHelp"
+            [(ngModel)]="book.images">
+        <small id="imagesHelp" class="form-text text-muted">Add image URLs divided by ','</small>
+    </div>
+
+    <div class="form-group">
+        <label for="authorInput">Author:</label>
+        <input type="text" class="form-control" id="authorInput" [(ngModel)]="book.author">
+    </div>
+
+    <div class="form-group">
+        <label for="dateInput">Date:</label>
+        <input type="text" class="form-control" id="dateInput" [(ngModel)]="book.date">
+    </div>
+
+    <div class="form-group">
+        <label for="addressInput">Address:</label>
+        <input type="text" class="form-control" id="addressInput" [(ngModel)]="book.address">
+    </div>
+
+    <div class="form-group">
+        <label for="publisherInput">Publisher name:</label>
+        <input type="text" class="form-control" id="publisherInput" [(ngModel)]="book.publisher">
+    </div>
+
+    <div class="form-group">
+        <label for="phoneInput">Phone:</label>
+        <input type="text" class="form-control" id="phoneInput" [(ngModel)]="book.phone">
+    </div>
+
+    <div class="form-group">
+        <label for="categoryInput">Category:</label>
+        <input type="text" class="form-control" id="categoryInput" [(ngModel)]="book.category">
+    </div>
+
+    <button class="btn submit" (click)="submitBook()">Submit</button>
+    <button class="btn back" (click)="back()">Back</button>
+</ng-container>
